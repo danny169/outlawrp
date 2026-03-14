@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OUTLAW RP | Premium RedM Roleplay</title>
+    <style>
+        /* CSS STYLES */
+        @import url('https://fonts.googleapis.com/css2?family=Rye&family=Spectral:wght@300;400;700&display=swap');
+
+        :root {
+            --bg-color: #0a0808;
+            --text-main: #d3c7b6;
+            --accent-red: #8a1c1c;
+            --accent-red-hover: #b82323;
+            --accent-gold: #b38b3b;
+            --panel-bg: rgba(15, 12, 12, 0.90);
+            --border-style: 2px solid var(--accent-red);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body, html {
+            height: 100%;
+            font-family: 'Spectral', serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Dynamic Background Layer */
+        #bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background-image 0.8s ease-in-out;
+            z-index: -2;
+            background-image: url('https://images.unsplash.com/photo-1558231015-680fcc304ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+        }
+
+        /* Overlay to darken background */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(10, 8, 8, 0.9)); 
+            z-index: -1;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Rye', cursive; font-weight: normal; color: var(--accent-gold); letter-spacing: 1px;}
+        p { line-height: 1.6; margin-bottom: 1rem; font-size: 1.1rem; }
+
+        /* Navigation */
+        nav {
+            background-color: rgba(5, 5, 5, 0.98);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent-red);
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.9);
+        }
+        
+        .logo { font-size: 2.2rem; font-family: 'Rye', cursive; color: var(--accent-red); text-shadow: 2px 2px 0 #000; letter-spacing: 2px; }
+        .logo span { color: var(--accent-gold); }
+
+        .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .nav-links button {
+            background: none; border: none;
+            color: var(--text-main);
+            font-size: 1rem; font-family: 'Spectral', serif; font-weight: bold;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-links button:hover, .nav-links button.active { 
+            color: var(--accent-red); 
+            border-bottom: 2px solid var(--accent-red);
+            text-shadow: 0 0 8px rgba(138, 28, 28, 0.6);
+        }
+
+        /* Server Status Badge */
+        .server-status {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(0,0,0,0.6); padding: 8px 15px; border: 1px solid #333; border-radius: 4px;
+            font-family: 'Rye', cursive; font-size: 0.9rem;
+        }
+        .status-dot { width: 10px; height: 10px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 8px #2ecc71; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* Page Container */
+        .container { max-width: 1300px; margin: 3rem auto; padding: 0 1rem; min-height: 75vh; }
+
+        /* Sections */
+        .page-section { display: none; animation: fadeIn 0.6s ease-out; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Panel Design */
+        .panel {
+            background: var(--panel-bg);
+            border: var(--border-style);
+            padding: 3rem; border-radius: 3px; margin-bottom: 2rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9), inset 0 0 50px rgba(0,0,0,0.5);
+        }
+        
+        .panel-header { text-align: center; margin-bottom: 3rem; border-bottom: 1px solid #333; padding-bottom: 1rem;}
+        .panel-header h2 { font-size: 3rem; color: var(--accent-red); text-shadow: 2px 2px #000;}
+
+        /* Home Page */
+        .hero { text-align: center; margin-bottom: 5rem; margin-top: 4rem; }
+        .hero h1 { font-size: 5rem; margin-bottom: 1rem; color: #fff; text-shadow: 4px 4px 10px #000, 0 0 30px rgba(138, 28, 28, 0.8); letter-spacing: 4px;}
+        .hero p { font-size: 1.8rem; max-width: 900px; margin: 0 auto 3rem auto; text-shadow: 2px 2px 5px #000; font-weight: 300; color: #eee;}
+        
+        .btn {
+            background: var(--accent-red); color: #fff;
+            padding: 18px 40px; font-size: 1.4rem; font-family: 'Rye', cursive;
+            border: 2px solid #000; cursor: pointer; text-transform: uppercase;
+            box-shadow: 4px 4px 0px #000; transition: all 0.2s;
+            letter-spacing: 2px;
+        }
+        .btn:hover { background: var(--accent-gold); color: #000; transform: translateY(-3px); box-shadow: 6px 6px 0px #000; }
+        .btn:active { transform: translateY(2px); box-shadow: 1px 1px 0px #000; }
+
+        /* Features & Factions Grid */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
+        .card { 
+            text-align: center; padding: 2.5rem; background: rgba(5,5,5,0.8); 
+            border: 1px solid #444; transition: transform 0.3s, border-color 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--accent-red);
+        }
+        .card:hover { transform: translateY(-8px); border-color: var(--accent-gold); box-shadow: 0 10px 25px rgba(0,0,0,0.9); }
+        .card h3 { margin-bottom: 1rem; font-size: 1.8rem; color: #fff; }
+
+        /* Gallery Grid */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .gallery-item { width: 100%; height: 250px; object-fit: cover; border: 2px solid #333; transition: all 0.3s; cursor: pointer; filter: grayscale(40%);}
+        .gallery-item:hover { transform: scale(1.02); filter: grayscale(0%); border-color: var(--accent-gold); z-index: 10; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.8);}
+
+        /* Rules Page (Enhanced with Accordions and Tables) */
+        .rules-container { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .rule-category { background: rgba(0,0,0,0.5); padding: 2rem; border-left: 4px solid var(--accent-red); margin-bottom: 1rem;}
+        .rule-item { margin-bottom: 1.5rem; }
+        .rule-item h4 { color: #fff; font-family: 'Spectral', serif; font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: bold;}
+        
+        /* Collapsible Details Styling */
+        details { width: 100%; }
+        summary { font-family: 'Rye', cursive; font-size: 1.8rem; color: var(--accent-gold); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; outline: none; transition: color 0.3s;}
+        summary::-webkit-details-marker { display: none; }
+        summary:hover { color: var(--accent-red-hover); }
+        summary::after { content: '+'; font-size: 2rem; color: var(--accent-red); font-family: 'Spectral', serif; }
+        details[open] summary::after { content: '-'; }
+        .details-content { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #555; animation: fadeIn 0.4s ease-out; }
+
+        /* Penal Code Tables */
+        .penal-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; background: rgba(0,0,0,0.7); }
+        .penal-table th, .penal-table td { border: 1px solid #444; padding: 12px; text-align: left; }
+        .penal-table th { background: rgba(138, 28, 28, 0.85); color: #fff; font-family: 'Spectral', serif; font-size: 1.1rem; letter-spacing: 1px;}
+        .penal-table td { font-size: 1rem; color: var(--text-main); }
+        .penal-table tr:nth-child(even) { background: rgba(20,20,20,0.6); }
+        .penal-table tr:hover { background: rgba(138, 28, 28, 0.2); }
+        .penal-highlight { color: var(--accent-gold); font-weight: bold; }
+
+        /* Application Form */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 0.8rem; color: var(--accent-gold); font-weight: bold; letter-spacing: 1px; font-size: 1.1rem;}
+        input[type="text"], input[type="email"], input[type="number"], select, textarea {
+            width: 100%; padding: 15px; background: rgba(0,0,0,0.7);
+            border: 1px solid #555; color: #fff; font-family: 'Spectral', serif; font-size: 1.1rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--accent-red); background: rgba(20,0,0,0.8); box-shadow: 0 0 10px rgba(138, 28, 28, 0.5); }
+        textarea { resize: vertical; min-height: 150px; }
+
+        /* Footer */
+        footer {
+            background: rgba(5, 5, 5, 0.98); text-align: center; padding: 3rem;
+            border-top: 3px solid var(--accent-red); margin-top: auto; position: relative; z-index: 10;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .penal-table, .penal-table tbody, .penal-table tr, .penal-table td, .penal-table th { display: block; width: 100%; }
+            .penal-table tr { margin-bottom: 1rem; border-bottom: 2px solid var(--accent-red); }
+            .penal-table td { text-align: right; padding-left: 50%; position: relative; }
+            .penal-table td::before { content: attr(data-label); position: absolute; left: 10px; font-weight: bold; color: var(--accent-gold); }
+            .penal-table th { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="bg-layer"></div>
+    <div class="overlay"></div>
+
+    <nav>
+        <div class="logo">OUTLAW <span>RP</span></div>
+        <div class="nav-links">
+            <button class="active" onclick="switchPage('home', event)">Home</button>
+            <button onclick="switchPage('lore', event)">Lore</button>
+            <button onclick="switchPage('factions', event)">Factions</button>
+            <button onclick="switchPage('rules', event)">Rules & Laws</button>
+            <button onclick="switchPage('gallery', event)">Gallery</button>
+            <button onclick="switchPage('apply', event)" style="color: var(--accent-red);">Apply Now</button>
+        </div>
+        <div class="server-status">
+            <div class="status-dot"></div>
+            SERVER ONLINE: 64/128
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="home" class="page-section active">
+            <div class="hero">
+                <h1>FORGE YOUR LEGACY</h1>
+                <p>Mount up, draw your iron, and survive in the most immersive, hardcore RedM roleplay experience available. Will you tame the west, or will the west tame you?</p>
+                <button class="btn" onclick="switchPage('apply', event)">Submit Whitelist App</button>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Deep Outlaw Systems</h3>
+                    <p>Rob trains, stagecoaches, banks, and local stores. Form gangs with custom hideouts, utilize secret black markets, and fight for territory in brutal turf wars.</p>
+                </div>
+                <div class="card">
+                    <h3>Hardcore Economy</h3>
+                    <p>Every dollar is earned through blood, sweat, or theft. Hunt legendary animals, mine for gold, craft bespoke weapons, and trade in a player-driven market.</p>
+                </div>
+                <div class="card">
+                    <h3>Dynamic Law & Order</h3>
+                    <p>Join a player-run sheriff department. Serve warrants, hunt player bounties, and experience a fully functional court, judge, and penitentiary system.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="lore" class="page-section">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>The World of OUTLAW RP</h2>
+                </div>
+                <h3 style="font-size: 2rem; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 20px;">The Year is 1899</h3>
+                <p>The age of the gunslinger is drawing to a close, but the dying embers of the wild west burn the hottest. The federal government, backed by wealthy eastern magnates and the ruthless Pinkerton Detective Agency, is systematically crushing the remaining outlaw gangs.</p>
+                <p>In the territories of New Hanover, Ambarino, Lemoyne, and New Austin, civilization is encroaching. Telegraph lines cut across the skies, and the smoke of locomotives chokes the pristine valleys. Yet, in the shadows of the saloons and the hidden canyons, outlaws, rustlers, and revolutionaries refuse to bow to the coming century.</p>
+                
+                <h3 style="font-size: 2rem; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 20px; margin-top: 40px;">State of the Territories</h3>
+                <div class="grid-3" style="gap: 1.5rem;">
+                    <div style="background: rgba(0,0,0,0.4); padding: 1.5rem; border: 1px solid #333;">
+                        <h4 style="color: #fff; font-size: 1.4rem;">New Hanover</h4>
+                        <p>The heartland. Valentine struggles under the weight of livestock barons and a corrupt local constabulary. It is a hotspot for rustlers and bar brawls.</p>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); padding: 1.5rem; border: 1px solid #333;">
+                        <h4 style="color: #fff; font-size: 1.4rem;">Lemoyne</h4>
+                        <p>Deep south corruption. The bustling city of Saint Denis offers high society and high-stakes crime, contrasting sharply with the treacherous, moonshine-soaked swamps of Bayou Nwa.</p>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); padding: 1.5rem; border: 1px solid #333;">
+                        <h4 style="color: #fff; font-size: 1.4rem;">New Austin</h4>
+                        <p>The unforgiving desert. A haven for those running from the law. Armadillo is suffering from outbreaks of disease, and Tumbleweed operates under a dictator-like Sheriff.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="factions" class="page-section">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Factions & Organizations</h2>
+                    <p style="color: #aaa;">Join an existing legacy or build your own empire from the dirt up.</p>
+                </div>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3 style="color: #3498db;">Law Enforcement</h3>
+                        <p>From the muddy boots of the Valentine Deputies to the polished badges of the Saint Denis Police Department. Uphold the law, run investigations, and maintain order in a chaotic world.</p>
+                        <p><strong>Status:</strong> <span style="color: #2ecc71;">Hiring</span></p>
+                    </div>
+                    <div class="card">
+                        <h3 style="color: var(--accent-red);">Outlaw Gangs</h3>
+                        <p>Operate outside the law. Establish camps, run protection rackets, rob banks, and fight rival gangs for control of illicit trades like moonshining and gun-running.</p>
+                        <p><strong>Status:</strong> <span style="color: #f1c40f;">Apply In-City</span></p>
+                    </div>
+                    <div class="card">
+                        <h3 style="color: #e67e22;">The Medical Board</h3>
+                        <p>The true heroes of the frontier. Operate out of clinics across the map. Perform surgeries, treat gunshot wounds, craft vital medicines, and save lives.</p>
+                        <p><strong>Status:</strong> <span style="color: #2ecc71;">Hiring</span></p>
+                    </div>
+                    <div class="card">
+                        <h3 style="color: #9b59b6;">Business Owners</h3>
+                        <p>Run saloons, gunsmiths, general stores, or horse training facilities. Control the economy by supplying the county with the goods they need to survive.</p>
+                        <p><strong>Status:</strong> <span style="color: #f1c40f;">Requires Business Proposal</span></p>
+                    </div>
+                    <div class="card">
+                        <h3 style="color: #1abc9c;">Native Tribes</h3>
+                        <p>Embrace the old ways. Live off the land, protect your sacred territories, trade unique crafted goods, and navigate the complex politics of a changing world.</p>
+                        <p><strong>Status:</strong> <span style="color: #f1c40f;">Apply In-City</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gallery" class="page-section">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Frontier Gallery</h2>
+                    <p style="color: #aaa;">Captured moments from our community.</p>
+                </div>
+                <div class="gallery-grid">
+                    <img src="https://images.unsplash.com/photo-1596727293527-2c90c74fb9d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Horses" class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1488904558509-c1da62192135?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Old Town" class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1518349079527-96105c31fbb8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Campfire" class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1574015974293-817f0ebebb74?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Canyon" class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Desert Rider" class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1601335032077-4560ea54e5ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Saloon vibe" class="gallery-item">
+                </div>
+            </div>
+        </div>
+
+        <div id="rules" class="page-section">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Server Rules & Territorial Laws</h2>
+                    <p style="color: #aaa;">OOC Guidelines and In-Character Penal Code. Ignorance is no excuse.</p>
+                </div>
+
+                <div class="rules-container">
+                    
+                    <div class="rule-category" style="border-left-color: #3498db;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 2rem; color: #3498db;">General Roleplay (OOC)</h3>
+                        <div class="rule-item">
+                            <h4>1. Value of Life (NVL)</h4>
+                            <p>You must value your character's life at all times. If you are outnumbered or have a weapon drawn on you while unarmed, you must comply. Do not act like a fearless action hero.</p>
+                        </div>
+                        <div class="rule-item">
+                            <h4>2. Metagaming & Stream Sniping</h4>
+                            <p>Using out-of-character (OOC) information in-character (IC) is strictly banned. Watching a streamer playing on the server to find their location or plans will result in an immediate permanent ban.</p>
+                        </div>
+                        <div class="rule-item">
+                            <h4>3. Breaking Character</h4>
+                            <p>You must stay in character at all times. If there is a rule break or a bug, play through the scenario and report it on Discord later using a ticket. Never say "Press muscle muscle E" or "My game crashed" in voice chat.</p>
+                        </div>
+                        <div class="rule-item">
+                            <h4>4. Crime & Combat Rules</h4>
+                            <p><strong>RDM:</strong> Killing another player without proper roleplay initiation or a valid, build-up RP reason is prohibited. You must have a verbal exchange before shooting starts.<br>
+                            <strong>Limits:</strong> Max 6 outlaws in active major scenes (Banks, Trains). Min 4 LEOs online required for bank robbery.<br>
+                            <strong>Safe Zones:</strong> Medical clinics and spawn locations. Committing violent crimes or taking hostages here is forbidden.</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 3rem 0 1rem 0;">
+                        <h2 style="font-size: 2.5rem; color: var(--accent-gold);">Territorial Penal Code</h2>
+                        <p style="color: #aaa;">Issued under the authority of the U.S. Marshal’s Office, Outlaw RP County – 1900.</p>
+                    </div>
+
+                    <div class="rule-category">
+                        <details>
+                            <summary>I. Crimes Against Persons</summary>
+                            <div class="details-content">
+                                <table class="penal-table">
+                                    <thead><tr><th>Offense</th><th>Description</th><th>Fine</th><th>Sentence</th></tr></thead>
+                                    <tbody>
+                                        <tr><td data-label="Offense">Murder (1st Degree)</td><td data-label="Description">Unlawful killing with intent or ambush</td><td data-label="Fine" class="penal-highlight">—</td><td data-label="Sentence" class="penal-highlight">HUT</td></tr>
+                                        <tr><td data-label="Offense">Murder (2nd Degree)</td><td data-label="Description">Killing without premeditation</td><td data-label="Fine">$200</td><td data-label="Sentence" class="penal-highlight">HUT</td></tr>
+                                        <tr><td data-label="Offense">Manslaughter (Voluntary)</td><td data-label="Description">Killing in sudden passion or fight</td><td data-label="Fine">$150</td><td data-label="Sentence">8 Months</td></tr>
+                                        <tr><td data-label="Offense">Manslaughter (Involuntary)</td><td data-label="Description">Accidental killing due to recklessness</td><td data-label="Fine">$75</td><td data-label="Sentence">5–10 Months</td></tr>
+                                        <tr><td data-label="Offense">Attempted Murder</td><td data-label="Description">Intent to kill without success</td><td data-label="Fine">$100</td><td data-label="Sentence">10–12 Months</td></tr>
+                                        <tr><td data-label="Offense">Assault with Deadly Weapon</td><td data-label="Description">Attack with firearm, knife, or club</td><td data-label="Fine">$75</td><td data-label="Sentence">4–8 Months</td></tr>
+                                        <tr><td data-label="Offense">Simple Assault</td><td data-label="Description">Attack without deadly weapon</td><td data-label="Fine">$20</td><td data-label="Sentence">2 Months</td></tr>
+                                        <tr><td data-label="Offense">Battery on Officer</td><td data-label="Description">Assault on a lawman</td><td data-label="Fine">$100</td><td data-label="Sentence">10 Months</td></tr>
+                                        <tr><td data-label="Offense">Kidnapping</td><td data-label="Description">Abduction or unlawful restraint</td><td data-label="Fine">$200</td><td data-label="Sentence" class="penal-highlight">HUT</td></tr>
+                                        <tr><td data-label="Offense">Mayhem</td><td data-label="Description">Permanent injury or disfigurement</td><td data-label="Fine">$150</td><td data-label="Sentence" class="penal-highlight">HUT</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="rule-category">
+                        <details>
+                            <summary>II. Crimes Against Property</summary>
+                            <div class="details-content">
+                                <table class="penal-table">
+                                    <thead><tr><th>Offense</th><th>Description</th><th>Fine</th><th>Sentence</th></tr></thead>
+                                    <tbody>
+                                        <tr><td data-label="Offense">Arson (Structure)</td><td data-label="Description">Burning of building or ranch</td><td data-label="Fine">$200</td><td data-label="Sentence">9 Months</td></tr>
+                                        <tr><td data-label="Offense">Arson (Grassland)</td><td data-label="Description">Setting fire to open land</td><td data-label="Fine">$100</td><td data-label="Sentence">5 Months</td></tr>
+                                        <tr><td data-label="Offense">Horse Theft</td><td data-label="Description">Stealing or branding another’s horse</td><td data-label="Fine">$250</td><td data-label="Sentence">13 Months or Hanging (repeat)</td></tr>
+                                        <tr><td data-label="Offense">Cattle Rustling</td><td data-label="Description">Stealing livestock</td><td data-label="Fine">$150</td><td data-label="Sentence">10 Months</td></tr>
+                                        <tr><td data-label="Offense">Burglary</td><td data-label="Description">Breaking into dwelling with intent to steal</td><td data-label="Fine">$75</td><td data-label="Sentence">8 Months</td></tr>
+                                        <tr><td data-label="Offense">Grand Larceny</td><td data-label="Description">Theft over $50 in goods or money</td><td data-label="Fine">$50</td><td data-label="Sentence">3 Months</td></tr>
+                                        <tr><td data-label="Offense">Petty Larceny</td><td data-label="Description">Theft under $50</td><td data-label="Fine">$20</td><td data-label="Sentence">2-4 Months</td></tr>
+                                        <tr><td data-label="Offense">Robbery (Armed)</td><td data-label="Description">Theft by force with a weapon</td><td data-label="Fine">$200</td><td data-label="Sentence">6 Months</td></tr>
+                                        <tr><td data-label="Offense">Robbery (Unarmed)</td><td data-label="Description">Theft by intimidation</td><td data-label="Fine">$100</td><td data-label="Sentence">4 Months</td></tr>
+                                        <tr><td data-label="Offense">Stagecoach Robbery</td><td data-label="Description">Robbing coach, wagon, or mail</td><td data-label="Fine">$300</td><td data-label="Sentence">7 Months</td></tr>
+                                        <tr><td data-label="Offense">Train Robbery</td><td data-label="Description">Theft from or assault on train</td><td data-label="Fine">$500</td><td data-label="Sentence">10 Months</td></tr>
+                                        <tr><td data-label="Offense">Bank Robbery</td><td data-label="Description">Breaking into or robbing a bank</td><td data-label="Fine">$500</td><td data-label="Sentence">12 Months or Life Hard Labor</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="rule-category">
+                        <details>
+                            <summary>III & IV. Public Order & Morality</summary>
+                            <div class="details-content">
+                                <table class="penal-table">
+                                    <thead><tr><th>Offense</th><th>Description</th><th>Fine</th><th>Sentence</th></tr></thead>
+                                    <tbody>
+                                        <tr><td data-label="Offense">Disturbing the Peace</td><td data-label="Description">Disorderly conduct or loud brawling</td><td data-label="Fine">$10</td><td data-label="Sentence">1 Month</td></tr>
+                                        <tr><td data-label="Offense">Public Intoxication</td><td data-label="Description">Drunk and disorderly in public</td><td data-label="Fine">$5</td><td data-label="Sentence">1 Month</td></tr>
+                                        <tr><td data-label="Offense">Resisting Arrest</td><td data-label="Description">Interfering with law enforcement</td><td data-label="Fine">$25</td><td data-label="Sentence">1 Month</td></tr>
+                                        <tr><td data-label="Offense">Obstruction of Justice</td><td data-label="Description">Aiding escape or hiding criminal</td><td data-label="Fine">$75</td><td data-label="Sentence">1–3 Months</td></tr>
+                                        <tr><td data-label="Offense">Harboring a Fugitive</td><td data-label="Description">Sheltering wanted person</td><td data-label="Fine">$100</td><td data-label="Sentence">3 Months</td></tr>
+                                        <tr><td data-label="Offense">Escape from Custody</td><td data-label="Description">Breaking out of jail or transport</td><td data-label="Fine">$100</td><td data-label="Sentence">5 Months</td></tr>
+                                        <tr><td data-label="Offense">Failure to Pay Fines</td><td data-label="Description">Refusal to pay lawful penalties</td><td data-label="Fine">Double</td><td data-label="Sentence">2 Months</td></tr>
+                                        <tr><td data-label="Offense">Impersonating an Officer</td><td data-label="Description">Pretending to be law enforcement</td><td data-label="Fine">$50</td><td data-label="Sentence">6 Months</td></tr>
+                                        <tr><td data-label="Offense">Public Indecency</td><td data-label="Description">Lewd behavior or exposure</td><td data-label="Fine">$20</td><td data-label="Sentence">15 Days</td></tr>
+                                        <tr><td data-label="Offense">Illegal Gambling</td><td data-label="Description">Unlicensed gaming or rigged table</td><td data-label="Fine">$25</td><td data-label="Sentence">30 Days</td></tr>
+                                        <tr><td data-label="Offense">Opium/Moonshine Sale</td><td data-label="Description">Selling narcotics or illegal spirits</td><td data-label="Fine">$100</td><td data-label="Sentence">1–3 Months</td></tr>
+                                        <tr><td data-label="Offense">Desecration of Church/Grave</td><td data-label="Description">Theft or vandalism of holy sites</td><td data-label="Fine">$100</td><td data-label="Sentence">3 Months</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="rule-category">
+                        <details>
+                            <summary>V. Crimes Against the Government</summary>
+                            <div class="details-content">
+                                <table class="penal-table">
+                                    <thead><tr><th>Offense</th><th>Description</th><th>Fine</th><th>Sentence</th></tr></thead>
+                                    <tbody>
+                                        <tr><td data-label="Offense">Treason</td><td data-label="Description">Waging war or aiding enemies of U.S.</td><td data-label="Fine">—</td><td data-label="Sentence">Death</td></tr>
+                                        <tr><td data-label="Offense">Espionage</td><td data-label="Description">Spying or leaking secrets</td><td data-label="Fine">—</td><td data-label="Sentence">20 Months Hard Labor</td></tr>
+                                        <tr><td data-label="Offense">Bribery of Officer</td><td data-label="Description">Offering money to sway duty</td><td data-label="Fine">$200</td><td data-label="Sentence">10 Months</td></tr>
+                                        <tr><td data-label="Offense">Corruption in Office</td><td data-label="Description">Lawman abusing power</td><td data-label="Fine">$150</td><td data-label="Sentence">Termination + 60 Months</td></tr>
+                                        <tr><td data-label="Offense">Forgery</td><td data-label="Description">False documents or currency</td><td data-label="Fine">$100</td><td data-label="Sentence">5–10 Months</td></tr>
+                                        <tr><td data-label="Offense">Tax Evasion / Smuggling</td><td data-label="Description">Avoiding lawful tariffs</td><td data-label="Fine">$75</td><td data-label="Sentence">3 Months</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="rule-category">
+                        <details>
+                            <summary>VI. Wildlife & Land Violations (Game Warden Law)</summary>
+                            <div class="details-content">
+                                <h4>Hunting Hours</h4>
+                                <p><strong>Legal Hours:</strong> 5:00 AM – 8:00 PM<br>
+                                <strong>Allowed After Hours:</strong> Coyotes, Wolves, Raccoons.</p>
+                                
+                                <h4>Required License</h4>
+                                <p>Must Have: A valid Hunting License (covers Standard hunting, Fishing, Legendary animal hunting).</p>
+
+                                <h4>Firearms & Ammunition Rules</h4>
+                                <p><strong>Big Game:</strong> Rifles, Repeaters, Bows, High-Velocity Ammo.<br>
+                                <strong>Small Game:</strong> Varmint Rifle / .22, Bows, Shotguns with shells.<br>
+                                <strong>Waterfowl:</strong> Bows.</p>
+
+                                <h4>General Hunting Rules</h4>
+                                <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text-main);">
+                                    <li>No hunting from public roads mounted or unmounted, wagons, or boats.</li>
+                                    <li>No hunting within 50 yards (45 meters) of homes/businesses without written permission.</li>
+                                    <li>No leaving pelts behind (wildlife waste).</li>
+                                    <li>All wounded animals must be mercy-killed.</li>
+                                    <li><strong>Endangered (Do Not Kill):</strong> American Bison (non-legendary), American Beaver, Bald Eagle.</li>
+                                </ul>
+
+                                <h4>Hunting Fines (Tier System)</h4>
+                                <p><strong>1st Offense:</strong> Warning or $50 ($100+ for severe like explosives)<br>
+                                <strong>2nd Offense:</strong> $200-$250 + Suspension + Gear Confiscation + 3-6 Months Jail<br>
+                                <strong>3rd Offense:</strong> $500 + License Revoked + Gear Confiscation + 6-12 Months Jail<br>
+                                <span class="penal-highlight">Killing Endangered Species:</span> $1500 fine + license revoked + firearm confiscation + 12 months jail.</p>
+
+                                <h4>Fishing Laws</h4>
+                                <p><strong>Hours:</strong> Anytime (Night fishing requires lantern).<br>
+                                <strong>Endangered Aquatic:</strong> Starfish, Octopus, Squid, Stingray, Hammerhead Shark, Baby Whale.<br>
+                                <strong>Rules:</strong> No fishing near restricted homes/businesses, no fishing from railroad bridges, no explosives/firearms.</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="rule-category">
+                        <details>
+                            <summary>VII. Livestock Association Penal Code</summary>
+                            <div class="details-content">
+                                <h4>Section 1: Livestock Theft</h4>
+                                <p><strong>Grand Theft:</strong> $300–$700 Fine | 5 Months Prison<br>
+                                <strong>Attempted Theft:</strong> $150–$300 Fine | 1–3 Months Jail<br>
+                                <strong>Possession of Stolen Stock:</strong> $200 + Forfeiture | 1-2 Months Jail</p>
+
+                                <h4>Section 2: Brand Tampering</h4>
+                                <p><strong>Altering Brands:</strong> $100–$500 Fine | 2-4 Months Prison<br>
+                                <strong>Counterfeit Irons:</strong> $150 Fine | Irons Destroyed + 1-2 Months Jail</p>
+
+                                <h4>Section 3 & 4: Trespass & Destruction</h4>
+                                <p><strong>Unauthorized Drive-Through:</strong> $25 per head | Mandatory return<br>
+                                <strong>Trespass Grazing:</strong> $15 per head + damage fees<br>
+                                <strong>Fence Cutting:</strong> $100–$300 + repairs | Up to 1 Month Jail<br>
+                                <strong>Destruction of Rangeland:</strong> $200–$1000 Fine | 2-3 Months Confinement</p>
+
+                                <h4>Section 6: Watering Rights</h4>
+                                <p><strong>Dam Interference:</strong> $50–$200 Fine<br>
+                                <strong>Water Poisoning:</strong> $500–$1000 Fine | 4-6 Months Imprisonment</p>
+                                
+                                <p style="margin-top: 1rem; font-style: italic;">*Repeat Offenders face +25% increased fine and +50% increased jail time. Third offenses result in automatic referral to Territorial/Federal authorities.</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="rule-category">
+                        <details>
+                            <summary>VIII. Court, Sentencing, & Jail Time Chart</summary>
+                            <div class="details-content">
+                                <div class="form-grid">
+                                    <div>
+                                        <h4>Jail Time Conversion</h4>
+                                        <p style="color: var(--accent-gold);"><strong>1 Month In-Character = 7 Minutes Real Time</strong></p>
+                                        <ul style="list-style: none; color: var(--text-main);">
+                                            <li>1 Month = 7 Mins</li>
+                                            <li>2 Months = 14 Mins</li>
+                                            <li>3 Months = 21 Mins</li>
+                                            <li>4 Months = 28 Mins</li>
+                                            <li>5 Months = 35 Mins</li>
+                                            <li>6 Months = 42 Mins</li>
+                                            <li>12 Months = 84 Mins</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4>Court & Execution Notes</h4>
+                                        <ul style="margin-left: 1rem; color: var(--text-main); line-height: 1.6;">
+                                            <li><strong>Hard Labor:</strong> Rock breaking, road work, or rail construction under guard.</li>
+                                            <li><strong>Execution:</strong> By hanging or firing squad, carried out by Marshal or Sheriff.</li>
+                                            <li><strong>Fine Payment:</strong> Must be made in U.S. Dollars or Gold Coin within 10 days.</li>
+                                            <li><strong>Failure to Pay:</strong> $1 = 1 day served in jail.</li>
+                                            <li><strong>Transport:</strong> Escort prisoners to Saint Denis police dock, then to Sisika Penitentiary.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="apply" class="page-section">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Whitelist Application</h2>
+                    <p style="color: #aaa;">We review applications within 48-72 hours. High effort is required.</p>
+                </div>
+
+                <form id="whitelist-form" onsubmit="submitForm(event)">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem; border-bottom: 1px dashed #444; padding-bottom: 10px;">Out of Character Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="discord">Discord Username (e.g., outlaw#1234)</label>
+                            <input type="text" id="discord" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Real Life Age (Must be 18+)</label>
+                            <input type="number" id="age" min="18" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mic">Do you have a quality, working microphone?</label>
+                            <select id="mic" required>
+                                <option value="yes">Yes</option>
+                                <option value="no">No (Will result in denial)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">RedM/FiveM RP Experience</label>
+                            <select id="experience" required>
+                                <option value="expert">Expert (Years of experience)</option>
+                                <option value="intermediate">Intermediate (Played a few servers)</option>
+                                <option value="beginner">Beginner (First time RPing)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem; margin-bottom: 1.5rem; font-size: 1.5rem; border-bottom: 1px dashed #444; padding-bottom: 10px;">In-Character Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="charName">Character First & Last Name</label>
+                            <input type="text" id="charName" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="backstory">Character Backstory (Minimum 200 words)</label>
+                            <textarea id="backstory" placeholder="Detail your character's origins, why they are traveling to this specific territory, and what their personal goals and fears are..." required></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="scenario1">RP Scenario: You are at the saloon playing poker. Another player accuses you of cheating and draws a knife. You do not have a weapon. How do you respond?</label>
+                            <textarea id="scenario1" required></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="scenario2">RP Scenario: You find a severely injured person on the side of the road. They are bleeding out. What actions do you take?</label>
+                            <textarea id="scenario2" required></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 2rem; padding: 20px; font-size: 1.6rem;">Submit Whitelist Application</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <h2 style="font-size: 2.2rem; margin-bottom: 1rem; font-family: 'Rye', cursive;">OUTLAW <span style="color: var(--accent-red)">RP</span></h2>
+        <p>&copy; 2026 OUTLAW RP Community. Forging legends since 1899.</p>
+        <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+    </footer>
+
+    <script>
+        // Setup the Gun Click Sound
+        const gunClickSound = new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_73bb62c7cb.mp3?filename=gun-cocking-116068.mp3');
+        gunClickSound.volume = 0.4;
+
+        function playClickSound() {
+            gunClickSound.currentTime = 0;
+            gunClickSound.play().catch(e => console.log("Audio autoplay prevented."));
+        }
+
+        // Background Image Map based on page
+        const backgrounds = {
+            'home': "url('https://images.unsplash.com/photo-1558231015-680fcc304ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
+            'lore': "url('https://images.unsplash.com/photo-1488904558509-c1da62192135?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')", 
+            'factions': "url('https://images.unsplash.com/photo-1574015974293-817f0ebebb74?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')", 
+            'rules': "url('https://images.unsplash.com/photo-1518349079527-96105c31fbb8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')", 
+            'gallery': "url('https://images.unsplash.com/photo-1596727293527-2c90c74fb9d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')", 
+            'apply': "url('https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')" 
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const allButtons = document.querySelectorAll('button, summary'); // Added sound to summary clicks too!
+            allButtons.forEach(button => {
+                button.addEventListener('click', playClickSound);
+            });
+        });
+
+        // JavaScript to handle the multi-page navigation and background changes
+        function switchPage(pageId, event) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+
+            const navButtons = document.querySelectorAll('.nav-links button');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+
+            document.getElementById('bg-layer').style.backgroundImage = backgrounds[pageId];
+
+            if(event && event.target.tagName === 'BUTTON' && event.target.parentElement.classList.contains('nav-links')) {
+                event.target.classList.add('active');
+            } else if (pageId === 'apply') {
+                document.querySelector('.nav-links button:last-child').classList.add('active');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Handle form submission
+        function submitForm(event) {
+            event.preventDefault(); 
+            alert("Application submitted successfully! Your journey in OUTLAW RP begins soon.");
+            document.getElementById('whitelist-form').reset();
+        }
+    </script>
+</body>
+</html>
